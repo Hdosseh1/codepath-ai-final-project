@@ -33,7 +33,7 @@ The system has two parallel pipelines that share the same Claude model:
 
 Both pipelines converge at Claude Sonnet 4 and deliver a response through the Streamlit UI.
 
-![Oversight and testing layers](assets/test.png)
+![Oversight and testing layers](assets/tests.png)
 
 Quality is enforced at three levels: automated pytest (33 mocked tests, no API keys required), human-in-the-loop review via the visible tool-call trace in the UI, and runtime guardrails including a 5-iteration cap, full logging to `pawpal_ai.log`, and per-tool error handling.
 
