@@ -1,0 +1,47 @@
+2026-04-19 03:17:27,335 [INFO] pawpal_ai.rag: Retrieving vet near (38.9897, -77.0281)
+2026-04-19 03:17:27,566 [INFO] pawpal_ai.rag: Retrieved 0 vet results
+2026-04-19 03:17:27,575 [INFO] pawpal_ai.rag: Generating RAG response for: 'Which of these is best for my pet?'
+2026-04-19 03:17:27,800 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-04-19 03:29:08,373 [INFO] pawpal_ai.rag: Retrieving vet near (38.9897, -77.0281)
+2026-04-19 03:29:08,504 [INFO] pawpal_ai.rag: Retrieved 0 vet results
+2026-04-19 03:29:08,508 [INFO] pawpal_ai.rag: Generating RAG response for: 'Which of these is best for my pet?'
+2026-04-19 03:29:08,640 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-04-19 03:31:51,282 [INFO] pawpal_ai.rag: Retrieving vet near (38.9897, -77.0281)
+2026-04-19 03:31:51,377 [INFO] pawpal_ai.rag: Retrieved 0 vet results
+2026-04-19 03:31:51,378 [INFO] pawpal_ai.rag: Generating RAG response for: 'Which of these is best for my pet?'
+2026-04-19 03:31:51,449 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-04-19 03:31:59,674 [INFO] pawpal_ai.rag: Retrieving vet near (38.9897, -77.0281)
+2026-04-19 03:31:59,789 [INFO] pawpal_ai.rag: Retrieved 0 vet results
+2026-04-19 03:31:59,790 [INFO] pawpal_ai.rag: Generating RAG response for: 'Which of these is best for my pet?'
+2026-04-19 03:31:59,866 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-04-19 03:43:54,136 [INFO] pawpal_ai.rag: Retrieving vet near (38.9897, -77.0281)
+2026-04-19 03:43:54,271 [INFO] pawpal_ai.rag: Retrieved 0 vet results
+2026-04-19 03:43:54,274 [INFO] pawpal_ai.rag: Generating RAG response for: 'Which of these is best for my pet?'
+2026-04-19 03:43:54,410 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-04-19 03:51:20,964 [INFO] pawpal_ai.agent: Agent run started: "find the best rated vet near me and add a 60 minute appointment to max's schedule for tomorrow morning\n"
+2026-04-19 03:51:20,964 [INFO] pawpal_ai.agent: Iteration 1/5
+2026-04-19 03:51:21,065 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-04-19 04:13:56,937 [INFO] pawpal_ai.rag: Retrieving vet near (38.9897, -77.0281)
+2026-04-19 04:13:57,077 [INFO] pawpal_ai.rag: Retrieved 0 vet results
+2026-04-19 04:13:57,080 [INFO] pawpal_ai.rag: Generating RAG response for: 'Which of these is best for my pet?'
+2026-04-19 04:14:00,393 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 04:14:00,422 [INFO] pawpal_ai.rag: RAG response generated successfully
+2026-04-19 04:14:28,854 [INFO] pawpal_ai.rag: Retrieving vet near (38.9897, -77.0281)
+2026-04-19 04:14:28,969 [INFO] pawpal_ai.rag: Retrieved 0 vet results
+2026-04-19 04:14:28,971 [INFO] pawpal_ai.rag: Generating RAG response for: 'Which of these is best for my pet?'
+2026-04-19 04:14:32,650 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 04:14:32,653 [INFO] pawpal_ai.rag: RAG response generated successfully
+2026-04-19 04:15:43,370 [INFO] pawpal_ai.agent: Agent run started: 'find a dog park near me and add a 45 minute park visit to the schedule for mochi tonight\n'
+2026-04-19 04:15:43,370 [INFO] pawpal_ai.agent: Iteration 1/5
+2026-04-19 04:15:45,968 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 04:15:45,972 [INFO] pawpal_ai.agent: Tool call: search_nearby_places  input={"category": "park", "lat": 38.9897, "lng": -77.0281}
+2026-04-19 04:15:45,972 [INFO] pawpal_ai.rag: Retrieving park near (38.9897, -77.0281)
+2026-04-19 04:15:46,094 [INFO] pawpal_ai.rag: Retrieved 0 park results
+2026-04-19 04:15:46,098 [INFO] pawpal_ai.agent: Tool call: get_pet_schedule  input={"pet_name": "Mochi"}
+2026-04-19 04:15:46,098 [INFO] pawpal_ai.agent: Iteration 2/5
+2026-04-19 04:15:49,860 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 04:15:49,863 [INFO] pawpal_ai.agent: Agent finished in 2 iteration(s)
+2026-04-19 04:16:37,528 [INFO] pawpal_ai.agent: Agent run started: 'yes\n\n'
+2026-04-19 04:16:37,529 [INFO] pawpal_ai.agent: Iteration 1/5
+2026-04-19 04:16:40,879 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 04:16:40,882 [INFO] pawpal_ai.agent: Agent finished in 1 iteration(s)

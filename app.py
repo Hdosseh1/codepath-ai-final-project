@@ -3,8 +3,12 @@ from datetime import datetime, time
 import uuid
 from typing import Optional
 
+from dotenv import load_dotenv
+load_dotenv()
+
 # Core PawPal system classes
 from pawpal_system import User, Pet, Task, TaskScheduler, UserDataManager
+from app_ai_tab import render_ai_tab
 
 st.set_page_config(
     page_title="PawPal+",
@@ -178,7 +182,7 @@ with st.sidebar.expander("🗓️ Availability & Scheduling", expanded=True):
 st.title("🐾 PawPal+")
 st.caption("A task planner + scheduler for pet care.")
 
-tab1, tab2 = st.tabs(["📋 Tasks", "📅 Schedule"])
+tab1, tab2, tab3 = st.tabs(["📋 Tasks", "📅 Schedule", "🤖 AI Assistant"])
 
 with tab1:
     st.subheader("Current Task Overview")
@@ -386,3 +390,5 @@ with tab2:
                             x for x in st.session_state["archived_tasks"] if x.get("task_id") != a.get("task_id")
                         ]
                         st.success("Deleted archived task")
+with tab3:
+    render_ai_tab(user)
