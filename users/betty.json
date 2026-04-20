@@ -1,0 +1,20 @@
+{
+  "username": "betty",
+  "password": "",
+  "availability": [
+    "09:00-17:00"
+  ],
+  "preferences": {},
+  "pets": [
+    {
+      "pet_id": "betty-splinter-40ddd9",
+      "name": "splinter",
+      "species": "other",
+      "age": 2,
+      "health_info": "Healthy",
+      "task_priorities": {},
+      "user_preferences": {},
+      "tasks": []
+    }
+  ]
+}

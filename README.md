@@ -21,6 +21,14 @@ Together these turn PawPal+ from a manual task tracker into a proactive AI sched
 
 ---
 
+## Demo video
+
+Watch the project demo here:
+
+https://www.loom.com/share/047f5fa07c274303bf546d97a5110d97
+
+---
+
 ## Architecture overview
 
 ![Data flow diagram](assets/pipeline.png)

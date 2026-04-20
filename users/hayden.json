@@ -28,6 +28,70 @@
           "recurrence_pattern": "daily",
           "recurrence_days": [],
           "next_due_date": null
+        },
+        {
+          "task_id": "c736b03b4069463a9b59d126929b7a10",
+          "pet_id": "hayden-kat-dac9b6",
+          "name": "Morning Walk \u2013 Ellsworth Park and Dog Park",
+          "duration": 60,
+          "priority": 3,
+          "category": "walk",
+          "is_medication": false,
+          "preferred_time": "morning",
+          "is_recurring": false,
+          "recurrence_pattern": "daily",
+          "recurrence_days": [],
+          "next_due_date": null
+        }
+      ]
+    },
+    {
+      "pet_id": "hayden-doggie-54e136",
+      "name": "doggie",
+      "species": "dog",
+      "age": 2,
+      "health_info": "Healthy",
+      "task_priorities": {},
+      "user_preferences": {},
+      "tasks": [
+        {
+          "task_id": "ea51fde83021416cb83c4a184a823ba4",
+          "pet_id": "hayden-doggie-54e136",
+          "name": "Morning walk",
+          "duration": 15,
+          "priority": 3,
+          "category": "walk",
+          "is_medication": false,
+          "preferred_time": "morning",
+          "is_recurring": false,
+          "recurrence_pattern": "daily",
+          "recurrence_days": [],
+          "next_due_date": null
+        }
+      ]
+    },
+    {
+      "pet_id": "hayden-boogieman-a634f8",
+      "name": "boogieman",
+      "species": "cat",
+      "age": 1,
+      "health_info": "unhealthy",
+      "task_priorities": {},
+      "user_preferences": {},
+      "tasks": [
+        {
+          "task_id": "346186119f33474da88e070b532bd252",
+          "pet_id": "hayden-boogieman-a634f8",
+          "name": "doctor",
+          "duration": 30,
+          "priority": 5,
+          "category": "medication",
+          "is_medication": false,
+          "preferred_time": "morning",
+          "is_recurring": false,
+          "recurrence_pattern": "daily",
+          "recurrence_days": [],
+          "next_due_date": null
         }
       ]
     }

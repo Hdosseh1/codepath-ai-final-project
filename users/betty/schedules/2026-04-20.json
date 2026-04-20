@@ -1,0 +1,15 @@
+{
+  "user_id": "betty",
+  "date": "2026-04-20T00:30:40.552068",
+  "explanation": "Daily Schedule Generated:\n\nScheduled Tasks (sorted by time):\n  \u2022 Pet Store Trip \u2013 The Big Bad Woof (betty-splinter-40ddd9): 09:00 - 10:00 [Priority: 3]\n\nBased on your availability: 09:00-17:00",
+  "scheduled_tasks": [
+    {
+      "task_id": "1953c00aedcc440db437f94b43fa89f5",
+      "start_time": "09:00:00",
+      "end_time": "10:00:00",
+      "pet_id": "betty-splinter-40ddd9",
+      "status": "pending",
+      "task_name": "Pet Store Trip \u2013 The Big Bad Woof"
+    }
+  ]
+}

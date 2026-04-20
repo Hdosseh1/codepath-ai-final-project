@@ -1,0 +1,47 @@
+{
+  "user_id": "hayden",
+  "date": "2026-04-20T00:27:37.818153",
+  "explanation": "Daily Schedule Generated:\n\nScheduled Tasks (sorted by time):\n  \u2022 Vet Visit \u2013 Friendship Hospital for Animals (hayden-boogieman-a634f8): 09:00 - 10:00 [Priority: 5]\n  \u2022 doctor (hayden-boogieman-a634f8): 10:00 - 10:30 [Priority: 5]\n  \u2022 Morning Walk \u2013 Ellsworth Park and Dog Park (hayden-kat-dac9b6): 10:30 - 11:30 [Priority: 3]\n  \u2022 Morning walk (hayden-doggie-54e136): 11:30 - 11:45 [Priority: 3]\n  \u2022 Vet Visit \u2013 Apex Vets (hayden-kat-dac9b6): 11:45 - 12:45 [Priority: 3]\n\nBased on your availability: 09:00-17:00",
+  "scheduled_tasks": [
+    {
+      "task_id": "6a12507613e54b68b7bd3b4967873365",
+      "start_time": "09:00:00",
+      "end_time": "10:00:00",
+      "pet_id": "hayden-boogieman-a634f8",
+      "status": "pending",
+      "task_name": "Vet Visit \u2013 Friendship Hospital for Animals"
+    },
+    {
+      "task_id": "346186119f33474da88e070b532bd252",
+      "start_time": "10:00:00",
+      "end_time": "10:30:00",
+      "pet_id": "hayden-boogieman-a634f8",
+      "status": "pending",
+      "task_name": "doctor"
+    },
+    {
+      "task_id": "c736b03b4069463a9b59d126929b7a10",
+      "start_time": "10:30:00",
+      "end_time": "11:30:00",
+      "pet_id": "hayden-kat-dac9b6",
+      "status": "pending",
+      "task_name": "Morning Walk \u2013 Ellsworth Park and Dog Park"
+    },
+    {
+      "task_id": "ea51fde83021416cb83c4a184a823ba4",
+      "start_time": "11:30:00",
+      "end_time": "11:45:00",
+      "pet_id": "hayden-doggie-54e136",
+      "status": "pending",
+      "task_name": "Morning walk"
+    },
+    {
+      "task_id": "056ab784d9164450a84080145c75f56c",
+      "start_time": "11:45:00",
+      "end_time": "12:45:00",
+      "pet_id": "hayden-kat-dac9b6",
+      "status": "pending",
+      "task_name": "Vet Visit \u2013 Apex Vets"
+    }
+  ]
+}

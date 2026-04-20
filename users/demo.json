@@ -1,0 +1,49 @@
+{
+  "username": "demo",
+  "password": "",
+  "availability": [
+    "09:00-17:00"
+  ],
+  "preferences": {},
+  "pets": [
+    {
+      "pet_id": "demo-boogieman-729ffe",
+      "name": "boogieman",
+      "species": "cat",
+      "age": 1,
+      "health_info": "not healthy",
+      "task_priorities": {},
+      "user_preferences": {},
+      "tasks": [
+        {
+          "task_id": "24a33ab83b9f42428783d8e7d23aaf3f",
+          "pet_id": "demo-boogieman-729ffe",
+          "name": "Medication",
+          "duration": 5,
+          "priority": 5,
+          "category": "general",
+          "is_medication": true,
+          "preferred_time": "evening",
+          "is_recurring": true,
+          "recurrence_pattern": "daily",
+          "recurrence_days": [],
+          "next_due_date": null
+        },
+        {
+          "task_id": "c4c3cfba04524eeaa0b8628c9bcd749e",
+          "pet_id": "demo-boogieman-729ffe",
+          "name": "Vet Visit \u2013 Apex Vets",
+          "duration": 60,
+          "priority": 5,
+          "category": "medication",
+          "is_medication": true,
+          "preferred_time": "evening",
+          "is_recurring": false,
+          "recurrence_pattern": "daily",
+          "recurrence_days": [],
+          "next_due_date": null
+        }
+      ]
+    }
+  ]
+}
