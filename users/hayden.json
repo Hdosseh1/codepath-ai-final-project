@@ -1,7 +1,9 @@
 {
   "username": "hayden",
   "password": "",
-  "availability": [],
+  "availability": [
+    "09:00-17:00"
+  ],
   "preferences": {},
   "pets": [
     {
@@ -12,7 +14,22 @@
       "health_info": "Healthy",
       "task_priorities": {},
       "user_preferences": {},
-      "tasks": []
+      "tasks": [
+        {
+          "task_id": "056ab784d9164450a84080145c75f56c",
+          "pet_id": "hayden-kat-dac9b6",
+          "name": "Vet Visit \u2013 Apex Vets",
+          "duration": 60,
+          "priority": 3,
+          "category": "general",
+          "is_medication": false,
+          "preferred_time": "flexible",
+          "is_recurring": false,
+          "recurrence_pattern": "daily",
+          "recurrence_days": [],
+          "next_due_date": null
+        }
+      ]
     }
   ]
 }

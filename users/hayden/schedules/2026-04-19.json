@@ -1,0 +1,15 @@
+{
+  "user_id": "hayden",
+  "date": "2026-04-19T23:35:46.885335",
+  "explanation": "Daily Schedule Generated:\n\nScheduled Tasks (sorted by time):\n  \u2022 Vet Visit \u2013 Apex Vets (hayden-kat-dac9b6): 09:00 - 10:00 [Priority: 3]\n\nBased on your availability: 09:00-17:00",
+  "scheduled_tasks": [
+    {
+      "task_id": "056ab784d9164450a84080145c75f56c",
+      "start_time": "09:00:00",
+      "end_time": "10:00:00",
+      "pet_id": "hayden-kat-dac9b6",
+      "status": "pending",
+      "task_name": "Vet Visit \u2013 Apex Vets"
+    }
+  ]
+}

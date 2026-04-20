@@ -1,7 +1,7 @@
 """
-ai_features.py  —  Anicare AI Features
+ai_features.py  —  Anicare+ AI Features
 =======================================
-Provides two AI capabilities that slot cleanly into the existing Anicare system:
+Provides two AI capabilities that slot cleanly into the existing Anicare+ system:
 
   1. AnicareRAG   — Retrieval-Augmented Generation
                    Retrieves nearby vets / parks / pet stores via Google Places,
@@ -12,6 +12,10 @@ Provides two AI capabilities that slot cleanly into the existing Anicare system:
                    nearby places, read/write the pet schedule, and check
                    appointment availability.  A MAX_ITERATIONS guardrail prevents
                    runaway loops.
+
+Dependencies (add to requirements.txt):
+  anthropic>=0.25.0
+  requests>=2.31.0
 
 Environment variables required:
   ANTHROPIC_API_KEY   — your Anthropic key
@@ -122,7 +126,7 @@ AGENT_TOOLS = [
                 },
                 "category": {
                     "type": "string",
-                    "enum": ["general", "walk", "feeding", "grooming", "play", "medication"],
+                    "enum": ["walk", "general", "medication"],
                     "description": "Task category.",
                 },
                 "duration_minutes": {
@@ -223,27 +227,47 @@ class AnicareRAG:
         """Call Google Places Nearby Search and return up to 5 normalised results."""
         place_type = PLACE_TYPE_MAP.get(category, "veterinary_care")
         url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+        # Add keyword alongside type for better coverage
+        keyword_map = {"vet": "veterinarian", "park": "dog park", "pet_store": "pet store"}
         params = {
             "location": f"{lat},{lng}",
             "radius": radius_meters,
             "type": place_type,
+            "keyword": keyword_map.get(category, ""),
             "key": self.places_key,
         }
 
-        self._log.info("Retrieving %s near (%.4f, %.4f)", category, lat, lng)
+        self._log.info("Retrieving %s near (%.4f, %.4f) radius=%dm", category, lat, lng, radius_meters)
 
         try:
             resp = requests.get(url, params=params, timeout=8)
             resp.raise_for_status()
-            raw = resp.json().get("results", [])
+            data = resp.json()
         except requests.RequestException as exc:
-            self._log.error("Places API error: %s", exc)
-            return []
+            self._log.error("Places API network error: %s", exc)
+            return [{"_api_error": f"Network error: {exc}"}]
+
+        status = data.get("status", "UNKNOWN")
+        self._log.info("Places API status: %s", status)
+
+        if status == "REQUEST_DENIED":
+            msg = data.get("error_message", "API key rejected.")
+            self._log.error("Places API REQUEST_DENIED: %s", msg)
+            return [{"_api_error": f"REQUEST_DENIED — {msg}"}]
+        if status == "OVER_QUERY_LIMIT":
+            return [{"_api_error": "OVER_QUERY_LIMIT — quota exceeded for today."}]
+        if status == "INVALID_REQUEST":
+            return [{"_api_error": "INVALID_REQUEST — bad parameters sent to Places API."}]
+        if status not in ("OK", "ZERO_RESULTS"):
+            return [{"_api_error": f"Unexpected status: {status}"}]
+
+        raw = data.get("results", [])
+        self._log.info("Places returned %d results (status=%s)", len(raw), status)
 
         places = []
         for r in raw[:5]:
             oh = r.get("opening_hours", {})
-            open_now = oh.get("open_now")  # True | False | None
+            open_now = oh.get("open_now")
             places.append(
                 {
                     "name": r.get("name", "Unknown"),
@@ -256,7 +280,6 @@ class AnicareRAG:
                 }
             )
 
-        self._log.info("Retrieved %d %s results", len(places), category)
         return places
 
     # ------------------------------------------------------------------
@@ -314,7 +337,7 @@ class AnicareRAG:
         pet_ctx = f" for {pet_name}" if pet_name else ""
 
         system_prompt = (
-            "You are Anicare's AI assistant helping pet owners find local care services. "
+            "You are Anicare+'s AI assistant helping pet owners find local care services. "
             "Answer using ONLY the location data provided in the context below. "
             "Never invent place names, addresses, or ratings. "
             "If none of the listed locations suit the owner's needs, say so clearly. "
@@ -462,14 +485,10 @@ class AnicareAgent:
 
         upcoming = []
         for task in pet.tasks:
-            name_lower = task.name.lower()
             is_vet_related = (
                 task.category == "medication"
-                or "vet" in name_lower
-                or "appointment" in name_lower
-                or "clinic" in name_lower
-                or "checkup" in name_lower
-                or "exam" in name_lower
+                or "vet" in task.name.lower()
+                or "appointment" in task.name.lower()
             )
             if is_vet_related:
                 upcoming.append(
@@ -545,32 +564,38 @@ class AnicareAgent:
     # Main entry point
     # ------------------------------------------------------------------
 
-    def run(self, user_message: str, lat: float, lng: float) -> dict:
+    def run(
+        self,
+        user_message: str,
+        lat: float,
+        lng: float,
+        conversation_history: list = None,
+    ) -> dict:
         """
-        Execute the agentic loop.
+        Execute the agentic loop. Pass conversation_history to continue
+        an existing chat — Claude will have full context of previous exchanges.
 
-        Returns:
-          {
-            "answer"    : str,         # Claude's final response to the user
-            "tool_log"  : list[dict],  # every tool call + result for transparency
-            "iterations": int,         # how many Claude API calls were made
-          }
+        Returns dict with keys: answer, tool_log, iterations, messages.
+        Pass result["messages"] back as conversation_history next turn.
         """
         system_prompt = (
-            f"You are Anicare's AI scheduling assistant. "
+            f"You are Anicare+'s AI scheduling assistant. "
             f"The user's approximate location is latitude={lat}, longitude={lng}. "
             "You have tools to find nearby pet services, read and update the pet schedule, "
             "and check business hours. "
             "Always use real data from your tools — never invent place names or details. "
             "When you add a task to the schedule, confirm the action clearly. "
+            "You remember the full conversation — use it to give contextual replies. "
             "Be concise and action-oriented."
         )
 
-        messages: list[dict] = [{"role": "user", "content": user_message}]
+        # Start from existing history then append new user turn
+        messages: list[dict] = list(conversation_history) if conversation_history else []
+        messages.append({"role": "user", "content": user_message})
         tool_log: list[dict] = []
         iterations = 0
 
-        self._log.info("Agent run started: %r", user_message)
+        self._log.info("Agent run started: %r (history=%d msgs)", user_message, len(messages))
 
         while iterations < self.MAX_ITERATIONS:
             iterations += 1
@@ -590,10 +615,14 @@ class AnicareAgent:
                     (b.text for b in response.content if hasattr(b, "text")), ""
                 )
                 self._log.info("Agent finished in %d iteration(s)", iterations)
+                # Append final assistant reply to history
+                messages.append({"role": "assistant", "content": final_text})
+                self._log.info("Agent finished in %d iteration(s)", iterations)
                 return {
                     "answer": final_text,
                     "tool_log": tool_log,
                     "iterations": iterations,
+                    "messages": messages,
                 }
 
             # ---- Claude wants to call tools ----
@@ -603,10 +632,12 @@ class AnicareAgent:
                 final_text = next(
                     (b.text for b in response.content if hasattr(b, "text")), ""
                 )
+                messages.append({"role": "assistant", "content": final_text})
                 return {
                     "answer": final_text,
                     "tool_log": tool_log,
                     "iterations": iterations,
+                    "messages": messages,
                 }
 
             # Append assistant turn (with tool_use blocks)
@@ -639,4 +670,5 @@ class AnicareAgent:
             ),
             "tool_log": tool_log,
             "iterations": iterations,
+            "messages": messages,
         }

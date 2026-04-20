@@ -60,3 +60,90 @@
 2026-04-19 21:57:10,175 [INFO] anicare_ai.rag: Generating RAG response for: 'Which of these is best for my pet?'
 2026-04-19 21:57:14,042 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
 2026-04-19 21:57:14,044 [INFO] anicare_ai.rag: RAG response generated successfully
+2026-04-19 22:56:48,916 [INFO] anicare_ai.rag: Retrieving pet_store near (38.9897, -77.0281)
+2026-04-19 22:56:49,085 [INFO] anicare_ai.rag: Retrieved 0 pet_store results
+2026-04-19 22:56:49,087 [INFO] anicare_ai.rag: Generating RAG response for: 'Which of these is best for my pet?'
+2026-04-19 22:56:52,376 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 22:56:52,413 [INFO] anicare_ai.rag: RAG response generated successfully
+2026-04-19 23:00:01,904 [INFO] anicare_ai.rag: Retrieving pet_store near (38.9243, -77.0238)
+2026-04-19 23:00:02,011 [INFO] anicare_ai.rag: Retrieved 0 pet_store results
+2026-04-19 23:00:02,012 [INFO] anicare_ai.rag: Generating RAG response for: 'Which of these is best for my pet?'
+2026-04-19 23:00:05,028 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:00:05,036 [INFO] anicare_ai.rag: RAG response generated successfully
+2026-04-19 23:15:02,587 [INFO] anicare_ai.rag: Retrieving vet near (38.9897, -77.0281)
+2026-04-19 23:15:02,983 [INFO] anicare_ai.rag: Retrieved 5 vet results
+2026-04-19 23:15:02,985 [INFO] anicare_ai.rag: Generating RAG response for: 'Which of these is best for my pet?'
+2026-04-19 23:15:09,013 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:15:09,018 [INFO] anicare_ai.rag: RAG response generated successfully
+2026-04-19 23:24:05,924 [INFO] anicare_ai.rag: Retrieving vet near (38.9897, -77.0281)
+2026-04-19 23:24:06,240 [INFO] anicare_ai.rag: Retrieved 5 vet results
+2026-04-19 23:24:06,243 [INFO] anicare_ai.rag: Generating RAG response for: 'Which of these is best for my pet?'
+2026-04-19 23:24:11,981 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:24:11,988 [INFO] anicare_ai.rag: RAG response generated successfully
+2026-04-19 23:24:58,909 [INFO] anicare_ai.rag: Retrieving vet near (38.9897, -77.0281)
+2026-04-19 23:24:59,082 [INFO] anicare_ai.rag: Retrieved 5 vet results
+2026-04-19 23:24:59,086 [INFO] anicare_ai.rag: Generating RAG response for: 'I would like to have it neutered'
+2026-04-19 23:25:04,429 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:25:04,434 [INFO] anicare_ai.rag: RAG response generated successfully
+2026-04-19 23:26:00,262 [INFO] anicare_ai.agent: Agent run started: 'find a good vet near me'
+2026-04-19 23:26:00,262 [INFO] anicare_ai.agent: Iteration 1/5
+2026-04-19 23:26:02,228 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:26:02,234 [INFO] anicare_ai.agent: Tool call: search_nearby_places  input={"category": "vet", "lat": 38.9897, "lng": -77.0281}
+2026-04-19 23:26:02,234 [INFO] anicare_ai.rag: Retrieving vet near (38.9897, -77.0281)
+2026-04-19 23:26:02,362 [INFO] anicare_ai.rag: Retrieved 5 vet results
+2026-04-19 23:26:02,365 [INFO] anicare_ai.agent: Iteration 2/5
+2026-04-19 23:26:09,293 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:26:09,296 [INFO] anicare_ai.agent: Agent finished in 2 iteration(s)
+2026-04-19 23:26:59,901 [INFO] anicare_ai.agent: Agent run started: 'pick the closest one and book an appointment'
+2026-04-19 23:26:59,902 [INFO] anicare_ai.agent: Iteration 1/5
+2026-04-19 23:27:02,238 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:27:02,241 [INFO] anicare_ai.agent: Agent finished in 1 iteration(s)
+2026-04-19 23:27:42,962 [INFO] anicare_ai.agent: Agent run started: 'find the closest vet and book an appointment for tomorrow morning\n'
+2026-04-19 23:27:42,962 [INFO] anicare_ai.agent: Iteration 1/5
+2026-04-19 23:27:45,658 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:27:45,661 [INFO] anicare_ai.agent: Tool call: search_nearby_places  input={"category": "vet", "lat": 38.9897, "lng": -77.0281}
+2026-04-19 23:27:45,662 [INFO] anicare_ai.rag: Retrieving vet near (38.9897, -77.0281)
+2026-04-19 23:27:45,862 [INFO] anicare_ai.rag: Retrieved 5 vet results
+2026-04-19 23:27:45,866 [INFO] anicare_ai.agent: Iteration 2/5
+2026-04-19 23:27:49,441 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:27:49,444 [INFO] anicare_ai.agent: Tool call: check_place_hours  input={"place_id": "ChIJ497RtI7Jt4kR8yTiX9Kvk7k", "place_name": "GoodVets Silver Spring"}
+2026-04-19 23:27:49,596 [INFO] anicare_ai.agent: Iteration 3/5
+2026-04-19 23:27:52,517 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:27:52,520 [INFO] anicare_ai.agent: Agent finished in 3 iteration(s)
+2026-04-19 23:32:55,873 [INFO] anicare_ai.agent: Agent run started: 'my pet is kat\n\n' (history=1 msgs)
+2026-04-19 23:32:55,874 [INFO] anicare_ai.agent: Iteration 1/5
+2026-04-19 23:32:56,024 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 404 Not Found"
+2026-04-19 23:33:59,616 [INFO] anicare_ai.agent: Agent run started: 'my pet is kat\n\n' (history=1 msgs)
+2026-04-19 23:33:59,617 [INFO] anicare_ai.agent: Iteration 1/5
+2026-04-19 23:34:02,056 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:34:02,059 [INFO] anicare_ai.agent: Agent finished in 1 iteration(s)
+2026-04-19 23:34:02,060 [INFO] anicare_ai.agent: Agent finished in 1 iteration(s)
+2026-04-19 23:34:21,382 [INFO] anicare_ai.agent: Agent run started: 'find a nearby vet \n\n' (history=3 msgs)
+2026-04-19 23:34:21,382 [INFO] anicare_ai.agent: Iteration 1/5
+2026-04-19 23:34:23,426 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:34:23,429 [INFO] anicare_ai.agent: Tool call: search_nearby_places  input={"category": "vet", "lat": 38.9897, "lng": -77.0281}
+2026-04-19 23:34:23,429 [INFO] anicare_ai.rag: Retrieving vet near (38.9897, -77.0281) radius=5000m
+2026-04-19 23:34:24,100 [INFO] anicare_ai.rag: Places API status: OK
+2026-04-19 23:34:24,102 [INFO] anicare_ai.rag: Places returned 11 results (status=OK)
+2026-04-19 23:34:24,104 [INFO] anicare_ai.agent: Iteration 2/5
+2026-04-19 23:34:28,086 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:34:28,089 [INFO] anicare_ai.agent: Agent finished in 2 iteration(s)
+2026-04-19 23:34:28,089 [INFO] anicare_ai.agent: Agent finished in 2 iteration(s)
+2026-04-19 23:34:52,641 [INFO] anicare_ai.agent: Agent run started: 'book an appointment for Kat tomorrow and add it to the schedule\n' (history=7 msgs)
+2026-04-19 23:34:52,642 [INFO] anicare_ai.agent: Iteration 1/5
+2026-04-19 23:34:56,450 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:34:56,452 [INFO] anicare_ai.agent: Agent finished in 1 iteration(s)
+2026-04-19 23:34:56,452 [INFO] anicare_ai.agent: Agent finished in 1 iteration(s)
+2026-04-19 23:35:11,043 [INFO] anicare_ai.agent: Agent run started: 'apex vets\n' (history=9 msgs)
+2026-04-19 23:35:11,044 [INFO] anicare_ai.agent: Iteration 1/5
+2026-04-19 23:35:14,784 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:35:14,788 [INFO] anicare_ai.agent: Tool call: check_place_hours  input={"place_id": "ChIJGfp9OovPt4kRiO5apFVz36M", "place_name": "Apex Vets"}
+2026-04-19 23:35:14,996 [INFO] anicare_ai.agent: Tool call: get_pet_schedule  input={"pet_name": "Kat"}
+2026-04-19 23:35:14,997 [INFO] anicare_ai.agent: Iteration 2/5
+2026-04-19 23:35:18,568 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:35:18,571 [INFO] anicare_ai.agent: Tool call: add_location_to_schedule  input={"pet_name": "Kat", "task_name": "Vet Visit \u2013 Apex Vets", "category": "general", "duration_minutes": 60, "preferred_time": "flexible"}
+2026-04-19 23:35:18,571 [INFO] anicare_ai.agent: Added task 'Vet Visit – Apex Vets' to Kat's schedule
+2026-04-19 23:35:18,571 [INFO] anicare_ai.agent: Iteration 3/5
+2026-04-19 23:35:21,873 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 23:35:21,876 [INFO] anicare_ai.agent: Agent finished in 3 iteration(s)
+2026-04-19 23:35:21,876 [INFO] anicare_ai.agent: Agent finished in 3 iteration(s)
