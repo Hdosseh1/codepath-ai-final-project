@@ -1,0 +1,18 @@
+{
+  "username": "hayden",
+  "password": "",
+  "availability": [],
+  "preferences": {},
+  "pets": [
+    {
+      "pet_id": "hayden-kat-dac9b6",
+      "name": "kat",
+      "species": "dog",
+      "age": 2,
+      "health_info": "Healthy",
+      "task_priorities": {},
+      "user_preferences": {},
+      "tasks": []
+    }
+  ]
+}

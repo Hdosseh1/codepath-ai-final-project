@@ -45,3 +45,18 @@
 2026-04-19 04:16:37,529 [INFO] pawpal_ai.agent: Iteration 1/5
 2026-04-19 04:16:40,879 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
 2026-04-19 04:16:40,882 [INFO] pawpal_ai.agent: Agent finished in 1 iteration(s)
+2026-04-19 21:56:36,676 [INFO] anicare_ai.rag: Retrieving pet_store near (38.9897, -77.0281)
+2026-04-19 21:56:36,834 [INFO] anicare_ai.rag: Retrieved 0 pet_store results
+2026-04-19 21:56:36,836 [INFO] anicare_ai.rag: Generating RAG response for: 'Which of these is best for my pet?'
+2026-04-19 21:56:40,150 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 21:56:40,186 [INFO] anicare_ai.rag: RAG response generated successfully
+2026-04-19 21:56:51,356 [INFO] anicare_ai.rag: Retrieving pet_store near (38.9897, -77.0281)
+2026-04-19 21:56:51,466 [INFO] anicare_ai.rag: Retrieved 0 pet_store results
+2026-04-19 21:56:51,468 [INFO] anicare_ai.rag: Generating RAG response for: 'Which of these is best for my pet?'
+2026-04-19 21:56:54,279 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 21:56:54,281 [INFO] anicare_ai.rag: RAG response generated successfully
+2026-04-19 21:57:10,042 [INFO] anicare_ai.rag: Retrieving park near (38.9897, -77.0281)
+2026-04-19 21:57:10,172 [INFO] anicare_ai.rag: Retrieved 0 park results
+2026-04-19 21:57:10,175 [INFO] anicare_ai.rag: Generating RAG response for: 'Which of these is best for my pet?'
+2026-04-19 21:57:14,042 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-04-19 21:57:14,044 [INFO] anicare_ai.rag: RAG response generated successfully

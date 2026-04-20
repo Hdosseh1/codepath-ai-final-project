@@ -18,26 +18,76 @@ st.set_page_config(
 )
 
 # -----------------------
-# Session init
+# Session init & Login
 # -----------------------
-if "anicare_user" not in st.session_state:
-    # Try to load a previously-saved user; otherwise create a default.
-    udm_init = UserDataManager()
-    loaded = None
-    try:
-        loaded = udm_init.load_user("Jordan")
-    except Exception:
-        loaded = None
+if "logged_in" not in st.session_state or not st.session_state["logged_in"]:
+    # Custom background for login page
+    st.markdown("""
+    <style>
+    body {
+        background-image: url('assets/pet_logpg.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    st.title("🐾 Anicare+ Login")
+    st.caption("Enter your username to login or create a new account.")
 
-    st.session_state["anicare_user"] = loaded if loaded else User(username="Jordan", password="")
+    username = st.text_input("Username", key="login_username")
+    
+    if st.button("Login", key="login_button"):
+        if not username.strip():
+            st.error("Please enter a username.")
+        else:
+            udm = UserDataManager()
+            user = udm.load_user(username.strip())
+            if user is None:
+                # New user
+                user = User(username=username.strip(), password="")
+                udm.save_user(user)
+                st.success(f"New account created for {username.strip()}!")
+            else:
+                st.success(f"Welcome back, {username.strip()}!")
+            
+            st.session_state["anicare_user"] = user
+            st.session_state["logged_in"] = True
+            st.rerun()
+    
+    st.stop()
+
+# User is logged in
+user: User = st.session_state["anicare_user"]
+
+# Custom theme for main page: white background, orange sidebar, black title
+st.markdown("""
+<style>
+body {
+    background-color: #ffffff;  /* White background */
+    color: #000000;  /* Black text */
+}
+.stSidebar {
+    background-color: rgba(255, 152, 0, 0.9);  /* Semi-transparent orange for sidebar */
+}
+.stTitle h1 {
+    color: #000000;  /* Black title text */
+}
+.stTabs [data-baseweb="tab-list"] {
+    background-color: #ffffff;  /* White tabs */
+}
+.stTabs [data-baseweb="tab"] {
+    color: #000000;  /* Black tab text */
+}
+</style>
+""", unsafe_allow_html=True)
 
 if "archived_tasks" not in st.session_state:
     st.session_state["archived_tasks"] = []
 
 if "last_schedule" not in st.session_state:
     st.session_state["last_schedule"] = None
-
-user: User = st.session_state["anicare_user"]
 
 # -----------------------
 # Helpers
@@ -71,6 +121,9 @@ st.sidebar.caption("Manage pets, tasks, and build a schedule.")
 
 with st.sidebar.expander("👤 User", expanded=True):
     st.sidebar.text_input("Username", value=user.username, disabled=True)
+    if st.sidebar.button("Logout", key="logout_button"):
+        st.session_state["logged_in"] = False
+        st.rerun()
     st.sidebar.caption("Tip: Add pets/tasks below, then generate a schedule.")
 
 with st.sidebar.expander("➕ Add Pet", expanded=False):
