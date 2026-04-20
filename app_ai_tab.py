@@ -1,29 +1,6 @@
 """
 app_ai_tab.py  —  Anicare AI Assistant Tab
 ==========================================
-This file contains the Streamlit UI for the two new AI features.
-
-HOW TO INTEGRATE INTO app.py
------------------------------
-1.  At the top of app.py, add:
-
-        from app_ai_tab import render_ai_tab
-
-2.  In the tab list, add a third tab:
-
-        tab1, tab2, tab3 = st.tabs(["📋 Tasks", "📅 Schedule", "🤖 AI Assistant"])
-
-3.  At the bottom of app.py, add:
-
-        with tab3:
-            render_ai_tab(user)
-
-4.  Add to your .env / Streamlit secrets:
-
-        ANTHROPIC_API_KEY   = "sk-ant-..."
-        GOOGLE_PLACES_KEY   = "AIza..."
-
-That's it — no changes to existing tabs required.
 """
 from __future__ import annotations
 import os

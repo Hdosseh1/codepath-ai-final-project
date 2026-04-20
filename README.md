@@ -6,7 +6,7 @@
 
 ## Original project
 
-This project extends **Anicare+**, built in Modules 1–3 of AI 110. The original app allowed a pet owner to create profiles for their pets, add care tasks (walks, feedings, medications, grooming), and generate a prioritized daily schedule that respected the owner's availability window. It included conflict detection, recurring task support, and a JSON-based persistence layer — but it had no AI features; all scheduling was rule-based Python logic.
+This project extends **Pawpal+**, built in Modules 1–3 of AI 110. The original app allowed a pet owner to create profiles for their pets, add care tasks (walks, feedings, medications, grooming), and generate a prioritized daily schedule that respected the owner's availability window. It included conflict detection, recurring task support, and a JSON-based persistence layer — but it had no AI features; all scheduling was rule-based Python logic.
 
 ---
 

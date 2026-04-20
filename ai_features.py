@@ -13,10 +13,6 @@ Provides two AI capabilities that slot cleanly into the existing Anicare system:
                    appointment availability.  A MAX_ITERATIONS guardrail prevents
                    runaway loops.
 
-Dependencies (add to requirements.txt):
-  anthropic>=0.25.0
-  requests>=2.31.0
-
 Environment variables required:
   ANTHROPIC_API_KEY   — your Anthropic key
   GOOGLE_PLACES_KEY   — your Google Places API key
