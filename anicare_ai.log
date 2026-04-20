@@ -250,3 +250,9 @@
 2026-04-20 00:30:29,080 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
 2026-04-20 00:30:29,082 [INFO] anicare_ai.agent: Agent finished in 2 iteration(s)
 2026-04-20 00:30:29,082 [INFO] anicare_ai.agent: Agent finished in 2 iteration(s)
+2026-04-20 01:21:03,462 [INFO] anicare_ai.rag: Retrieving vet near (38.9897, -77.0281) radius=5000m
+2026-04-20 01:21:04,310 [INFO] anicare_ai.rag: Places API status: OK
+2026-04-20 01:21:04,310 [INFO] anicare_ai.rag: Places returned 14 results (status=OK)
+2026-04-20 01:21:04,314 [INFO] anicare_ai.rag: Confidence scored: High (5 locations found, avg rating 4.7/5)
+2026-04-20 01:21:04,314 [INFO] anicare_ai.rag: Generating RAG response for: 'Which of these is best for my pet?' (confidence=High)
+2026-04-20 01:21:04,712 [INFO] httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 404 Not Found"

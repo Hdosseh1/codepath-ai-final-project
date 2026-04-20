@@ -51,7 +51,7 @@ logger = logging.getLogger("anicare_ai")
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
-MODEL = "claude-sonnet-4-20250514"
+MODEL = "claude-sonnet-4-6"
 
 PLACE_TYPE_MAP = {
     "vet": "veterinary_care",
