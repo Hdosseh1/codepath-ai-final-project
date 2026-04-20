@@ -1,13 +1,13 @@
 """
-ai_features.py  —  PawPal AI Features
+ai_features.py  —  Anicare AI Features
 =======================================
-Provides two AI capabilities that slot cleanly into the existing PawPal system:
+Provides two AI capabilities that slot cleanly into the existing Anicare system:
 
-  1. PawPalRAG   — Retrieval-Augmented Generation
+  1. AnicareRAG   — Retrieval-Augmented Generation
                    Retrieves nearby vets / parks / pet stores via Google Places,
                    then uses Claude to generate a grounded, context-aware answer.
 
-  2. PawPalAgent — Agentic Workflow
+  2. AnicareAgent — Agentic Workflow
                    Claude operates as an autonomous agent with tools to search
                    nearby places, read/write the pet schedule, and check
                    appointment availability.  A MAX_ITERATIONS guardrail prevents
@@ -33,20 +33,20 @@ from typing import Optional
 import anthropic
 import requests
 
-from pawpal_system import Pet, Task, User
+from anicare_system import Pet, Task, User
 
 # ---------------------------------------------------------------------------
-# Logging setup — writes to pawpal_ai.log AND console
+# Logging setup — writes to anicare_ai.log AND console
 # ---------------------------------------------------------------------------
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     handlers=[
-        logging.FileHandler("pawpal_ai.log"),
+        logging.FileHandler("anicare_ai.log"),
         logging.StreamHandler(),
     ],
 )
-logger = logging.getLogger("pawpal_ai")
+logger = logging.getLogger("anicare_ai")
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -197,7 +197,7 @@ AGENT_TOOLS = [
 # 1.  RAG PIPELINE
 # ===========================================================================
 
-class PawPalRAG:
+class AnicareRAG:
     """
     Retrieval-Augmented Generation pipeline.
 
@@ -211,7 +211,7 @@ class PawPalRAG:
     def __init__(self, client: anthropic.Anthropic, google_places_key: str) -> None:
         self.client = client
         self.places_key = google_places_key
-        self._log = logging.getLogger("pawpal_ai.rag")
+        self._log = logging.getLogger("anicare_ai.rag")
 
     # ------------------------------------------------------------------
     # Step 1: Retrieve
@@ -318,7 +318,7 @@ class PawPalRAG:
         pet_ctx = f" for {pet_name}" if pet_name else ""
 
         system_prompt = (
-            "You are PawPal's AI assistant helping pet owners find local care services. "
+            "You are Anicare's AI assistant helping pet owners find local care services. "
             "Answer using ONLY the location data provided in the context below. "
             "Never invent place names, addresses, or ratings. "
             "If none of the listed locations suit the owner's needs, say so clearly. "
@@ -350,7 +350,7 @@ class PawPalRAG:
 # 2.  AGENTIC WORKFLOW
 # ===========================================================================
 
-class PawPalAgent:
+class AnicareAgent:
     """
     Autonomous agent that plans and acts across multiple tool calls.
 
@@ -374,8 +374,8 @@ class PawPalAgent:
         self.client = client
         self.places_key = google_places_key
         self.user = user
-        self._rag = PawPalRAG(client, google_places_key)
-        self._log = logging.getLogger("pawpal_ai.agent")
+        self._rag = AnicareRAG(client, google_places_key)
+        self._log = logging.getLogger("anicare_ai.agent")
 
     # ------------------------------------------------------------------
     # Tool implementations
@@ -561,7 +561,7 @@ class PawPalAgent:
           }
         """
         system_prompt = (
-            f"You are PawPal's AI scheduling assistant. "
+            f"You are Anicare's AI scheduling assistant. "
             f"The user's approximate location is latitude={lat}, longitude={lng}. "
             "You have tools to find nearby pet services, read and update the pet schedule, "
             "and check business hours. "

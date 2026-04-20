@@ -1,5 +1,5 @@
 """
-app_ai_tab.py  —  PawPal AI Assistant Tab
+app_ai_tab.py  —  Anicare AI Assistant Tab
 ==========================================
 This file contains the Streamlit UI for the two new AI features.
 
@@ -30,8 +30,8 @@ import os
 import anthropic
 import streamlit as st
 
-from ai_features import PawPalRAG, PawPalAgent
-from pawpal_system import UserDataManager
+from ai_features import AnicareRAG, AnicareAgent
+from anicare_system import UserDataManager
 
 
 # ---------------------------------------------------------------------------
@@ -164,7 +164,7 @@ def render_ai_tab(user) -> None:
         if st.button("🔍 Search & Ask Claude", type="primary", key="rag_run"):
             pet_name = None if pet_filter == "All pets" else pet_filter
             with st.spinner("Retrieving locations and generating answer…"):
-                rag = PawPalRAG(client, gpl_key)
+                rag = AnicareRAG(client, gpl_key)
                 result = rag.query(
                     user_question=question,
                     category=category,
@@ -232,7 +232,7 @@ def render_ai_tab(user) -> None:
                 st.warning("Please enter a request before running the agent.")
             else:
                 with st.spinner("Agent is working… (may make multiple tool calls)"):
-                    agent = PawPalAgent(client, gpl_key, user)
+                    agent = AnicareAgent(client, gpl_key, user)
                     result = agent.run(user_prompt, lat=lat, lng=lng)
 
                 # Persist user data if the agent added a task

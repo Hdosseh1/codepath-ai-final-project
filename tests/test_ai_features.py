@@ -1,7 +1,7 @@
 """
-test_ai_features.py  —  PawPal AI Feature Tests
+test_ai_features.py  —  Anicare AI Feature Tests
 =================================================
-Tests for PawPalRAG and PawPalAgent in ai_features.py.
+Tests for AnicareRAG and AnicareAgent in ai_features.py.
 
 All external calls (Anthropic API + Google Places API) are mocked,
 so these tests run without any API keys and without burning credits.
@@ -15,8 +15,8 @@ import pytest
 from datetime import datetime, time
 from unittest.mock import MagicMock, patch, PropertyMock
 
-from pawpal_system import Pet, Task, ScheduledTask, User
-from ai_features import PawPalRAG, PawPalAgent, PLACE_TYPE_MAP, CATEGORY_LABEL
+from anicare_system import Pet, Task, ScheduledTask, User
+from ai_features import AnicareRAG, AnicareAgent, PLACE_TYPE_MAP, CATEGORY_LABEL
 
 
 # ===========================================================================
@@ -64,7 +64,7 @@ def sample_places():
 
 @pytest.fixture
 def basic_user():
-    """A User with one pet and one task, matching the PawPal data model."""
+    """A User with one pet and one task, matching the Anicare data model."""
     pet = Pet(
         pet_id="pet-001",
         name="Max",
@@ -92,10 +92,10 @@ def basic_user():
 
 
 # ===========================================================================
-# PawPalRAG  —  Unit tests
+# AnicareRAG  —  Unit tests
 # ===========================================================================
 
-class TestPawPalRAGRetrieve:
+class TestAnicareRAGRetrieve:
     """Tests for the retrieve_nearby_places step."""
 
     def test_returns_normalised_place_list(self, mock_anthropic_client):
@@ -117,7 +117,7 @@ class TestPawPalRAGRetrieve:
         mock_resp.raise_for_status = MagicMock()
 
         with patch("ai_features.requests.get", return_value=mock_resp):
-            rag = PawPalRAG(mock_anthropic_client, "fake-google-key")
+            rag = AnicareRAG(mock_anthropic_client, "fake-google-key")
             places = rag.retrieve_nearby_places("vet", 38.99, -77.03)
 
         assert len(places) == 1
@@ -132,7 +132,7 @@ class TestPawPalRAGRetrieve:
         """retrieve_nearby_places should return [] and not raise if the API errors."""
         import requests as req
         with patch("ai_features.requests.get", side_effect=req.RequestException("timeout")):
-            rag = PawPalRAG(mock_anthropic_client, "fake-google-key")
+            rag = AnicareRAG(mock_anthropic_client, "fake-google-key")
             places = rag.retrieve_nearby_places("vet", 38.99, -77.03)
 
         assert places == []
@@ -153,7 +153,7 @@ class TestPawPalRAGRetrieve:
         mock_resp.raise_for_status = MagicMock()
 
         with patch("ai_features.requests.get", return_value=mock_resp):
-            rag = PawPalRAG(mock_anthropic_client, "fake-google-key")
+            rag = AnicareRAG(mock_anthropic_client, "fake-google-key")
             places = rag.retrieve_nearby_places("vet", 38.99, -77.03)
 
         assert len(places) == 5
@@ -166,7 +166,7 @@ class TestPawPalRAGRetrieve:
 
         for category, expected_type in PLACE_TYPE_MAP.items():
             with patch("ai_features.requests.get", return_value=mock_resp) as mock_get:
-                rag = PawPalRAG(mock_anthropic_client, "fake-google-key")
+                rag = AnicareRAG(mock_anthropic_client, "fake-google-key")
                 rag.retrieve_nearby_places(category, 38.99, -77.03)
                 call_params = mock_get.call_args[1]["params"]
                 assert call_params["type"] == expected_type, (
@@ -174,28 +174,28 @@ class TestPawPalRAGRetrieve:
                 )
 
 
-class TestPawPalRAGContext:
+class TestAnicareRAGContext:
     """Tests for the build_context step."""
 
     def test_context_contains_place_names(self, mock_anthropic_client, sample_places):
-        rag = PawPalRAG(mock_anthropic_client, "fake-google-key")
+        rag = AnicareRAG(mock_anthropic_client, "fake-google-key")
         context = rag.build_context(sample_places, "vet")
         assert "City Animal Hospital" in context
         assert "Paws & Claws Vet" in context
 
     def test_context_shows_open_status(self, mock_anthropic_client, sample_places):
-        rag = PawPalRAG(mock_anthropic_client, "fake-google-key")
+        rag = AnicareRAG(mock_anthropic_client, "fake-google-key")
         context = rag.build_context(sample_places, "vet")
         assert "Open now" in context
         assert "Currently closed" in context
 
     def test_context_handles_empty_places(self, mock_anthropic_client):
-        rag = PawPalRAG(mock_anthropic_client, "fake-google-key")
+        rag = AnicareRAG(mock_anthropic_client, "fake-google-key")
         context = rag.build_context([], "vet")
         assert "No nearby" in context
 
     def test_context_includes_ratings(self, mock_anthropic_client, sample_places):
-        rag = PawPalRAG(mock_anthropic_client, "fake-google-key")
+        rag = AnicareRAG(mock_anthropic_client, "fake-google-key")
         context = rag.build_context(sample_places, "vet")
         assert "4.7" in context
         assert "4.2" in context
@@ -213,12 +213,12 @@ class TestPawPalRAGContext:
                 "lng": -77.0,
             }
         ]
-        rag = PawPalRAG(mock_anthropic_client, "fake-google-key")
+        rag = AnicareRAG(mock_anthropic_client, "fake-google-key")
         context = rag.build_context(places, "vet")
         assert "Hours unknown" in context
 
 
-class TestPawPalRAGQuery:
+class TestAnicareRAGQuery:
     """End-to-end tests for the full RAG query pipeline."""
 
     def test_query_returns_answer_places_and_context(
@@ -241,7 +241,7 @@ class TestPawPalRAGQuery:
             ]
         }
         with patch("ai_features.requests.get", return_value=mock_resp):
-            rag = PawPalRAG(mock_anthropic_client, "fake-google-key")
+            rag = AnicareRAG(mock_anthropic_client, "fake-google-key")
             result = rag.query(
                 user_question="Which vet is best?",
                 category="vet",
@@ -274,7 +274,7 @@ class TestPawPalRAGQuery:
             ]
         }
         with patch("ai_features.requests.get", return_value=mock_resp):
-            rag = PawPalRAG(mock_anthropic_client, "fake-google-key")
+            rag = AnicareRAG(mock_anthropic_client, "fake-google-key")
             rag.query("Which vet?", "vet", 38.99, -77.03)
 
         call_kwargs = mock_anthropic_client.messages.create.call_args[1]
@@ -288,7 +288,7 @@ class TestPawPalRAGQuery:
         mock_resp.json.return_value = {"results": []}
 
         with patch("ai_features.requests.get", return_value=mock_resp):
-            rag = PawPalRAG(mock_anthropic_client, "fake-google-key")
+            rag = AnicareRAG(mock_anthropic_client, "fake-google-key")
             rag.query("Find a park", "park", 38.99, -77.03, pet_name="Max")
 
         call_kwargs = mock_anthropic_client.messages.create.call_args[1]
@@ -297,14 +297,14 @@ class TestPawPalRAGQuery:
 
 
 # ===========================================================================
-# PawPalAgent  —  Tool unit tests
+# AnicareAgent  —  Tool unit tests
 # ===========================================================================
 
 class TestAgentToolGetPetSchedule:
     """Tests for the get_pet_schedule tool implementation."""
 
     def test_returns_tasks_for_specific_pet(self, mock_anthropic_client, basic_user):
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         result = json.loads(agent._tool_get_pet_schedule(pet_name="Max"))
         assert isinstance(result, list)
         assert len(result) == 1
@@ -327,20 +327,20 @@ class TestAgentToolGetPetSchedule:
         pet2.add_task(task2)
         basic_user.pets.append(pet2)
 
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         result = json.loads(agent._tool_get_pet_schedule())
         assert len(result) == 2
 
     def test_returns_message_when_pet_not_found(
         self, mock_anthropic_client, basic_user
     ):
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         result = json.loads(agent._tool_get_pet_schedule(pet_name="NonExistent"))
         assert "message" in result or "No tasks" in str(result)
 
     def test_case_insensitive_pet_name(self, mock_anthropic_client, basic_user):
         """Pet name lookup should be case-insensitive."""
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         result = json.loads(agent._tool_get_pet_schedule(pet_name="max"))
         assert isinstance(result, list)
         assert len(result) == 1
@@ -350,7 +350,7 @@ class TestAgentToolAddLocationToSchedule:
     """Tests for the add_location_to_schedule tool implementation."""
 
     def test_adds_task_to_pet(self, mock_anthropic_client, basic_user):
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         initial_count = len(basic_user.pets[0].tasks)
 
         result = json.loads(
@@ -367,7 +367,7 @@ class TestAgentToolAddLocationToSchedule:
         assert len(basic_user.pets[0].tasks) == initial_count + 1
 
     def test_new_task_has_correct_name(self, mock_anthropic_client, basic_user):
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         agent._tool_add_location_to_schedule(
             pet_name="Max",
             task_name="Park visit – Sligo Creek",
@@ -379,7 +379,7 @@ class TestAgentToolAddLocationToSchedule:
 
     def test_medication_task_gets_high_priority(self, mock_anthropic_client, basic_user):
         """Medication tasks should automatically get priority 5."""
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         agent._tool_add_location_to_schedule(
             pet_name="Max",
             task_name="Give flea meds",
@@ -393,7 +393,7 @@ class TestAgentToolAddLocationToSchedule:
         assert med_task.is_medication is True
 
     def test_returns_error_for_unknown_pet(self, mock_anthropic_client, basic_user):
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         result = json.loads(
             agent._tool_add_location_to_schedule(
                 pet_name="Ghost",
@@ -405,7 +405,7 @@ class TestAgentToolAddLocationToSchedule:
         assert "error" in result
 
     def test_recurring_task_flag_is_preserved(self, mock_anthropic_client, basic_user):
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         agent._tool_add_location_to_schedule(
             pet_name="Max",
             task_name="Weekly park run",
@@ -438,7 +438,7 @@ class TestAgentToolGetNextAppointment:
         )
         basic_user.pets[0].add_task(med_task)
 
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         result = json.loads(agent._tool_get_next_appointment(pet_name="Max"))
 
         assert isinstance(result, list)
@@ -456,7 +456,7 @@ class TestAgentToolGetNextAppointment:
         )
         basic_user.pets[0].add_task(vet_task)
 
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         result = json.loads(agent._tool_get_next_appointment(pet_name="Max"))
 
         assert any("Vet checkup" in item["task"] for item in result)
@@ -465,19 +465,19 @@ class TestAgentToolGetNextAppointment:
         self, mock_anthropic_client, basic_user
     ):
         """Should return a message dict (not error) when no vet/med tasks exist."""
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         result = json.loads(agent._tool_get_next_appointment(pet_name="Max"))
         # basic_user only has a "walk" task, so no appointments
         assert "message" in result
 
     def test_returns_error_for_unknown_pet(self, mock_anthropic_client, basic_user):
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         result = json.loads(agent._tool_get_next_appointment(pet_name="Ghost"))
         assert "error" in result
 
 
 # ===========================================================================
-# PawPalAgent  —  Agentic loop tests
+# AnicareAgent  —  Agentic loop tests
 # ===========================================================================
 
 class TestAgentLoop:
@@ -485,7 +485,7 @@ class TestAgentLoop:
 
     def test_single_turn_no_tools(self, mock_anthropic_client, basic_user):
         """If Claude returns end_turn immediately, run() should return its answer."""
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         result = agent.run("Hello, how are you?", lat=38.99, lng=-77.03)
 
         assert "answer" in result
@@ -529,7 +529,7 @@ class TestAgentLoop:
         mock_places_resp.json.return_value = {"results": []}
 
         with patch("ai_features.requests.get", return_value=mock_places_resp):
-            agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+            agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
             result = agent.run("Find a vet near me", lat=38.99, lng=-77.03)
 
         assert result["answer"] == "I found 2 vets near you."
@@ -557,10 +557,10 @@ class TestAgentLoop:
         # Every iteration returns another tool_use (infinite loop scenario)
         mock_anthropic_client.messages.create.return_value = looping_response
 
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         result = agent.run("Keep going forever", lat=38.99, lng=-77.03)
 
-        assert result["iterations"] == PawPalAgent.MAX_ITERATIONS
+        assert result["iterations"] == AnicareAgent.MAX_ITERATIONS
         assert "step limit" in result["answer"].lower() or "wasn't able" in result["answer"].lower()
 
     def test_tool_log_records_all_calls(self, mock_anthropic_client, basic_user):
@@ -588,7 +588,7 @@ class TestAgentLoop:
             response_iter2,
         ]
 
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         result = agent.run("What is on Max's schedule?", lat=38.99, lng=-77.03)
 
         assert len(result["tool_log"]) == 1
@@ -634,7 +634,7 @@ class TestAgentLoop:
         ]
 
         initial_count = len(basic_user.pets[0].tasks)
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         agent.run("Book a vet for Max", lat=38.99, lng=-77.03)
 
         assert len(basic_user.pets[0].tasks) == initial_count + 1
@@ -643,10 +643,10 @@ class TestAgentLoop:
 
 
 # ===========================================================================
-# Integration with existing PawPal system
+# Integration with existing Anicare system
 # ===========================================================================
 
-class TestIntegrationWithPawPalSystem:
+class TestIntegrationWithAnicareSystem:
     """
     Verify that AI-added tasks integrate cleanly with the existing
     TaskScheduler and ScheduledTask classes.
@@ -656,9 +656,9 @@ class TestIntegrationWithPawPalSystem:
         self, mock_anthropic_client, basic_user
     ):
         """A task added by the agent should be schedulable by TaskScheduler."""
-        from pawpal_system import TaskScheduler
+        from anicare_system import TaskScheduler
 
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         agent._tool_add_location_to_schedule(
             pet_name="Max",
             task_name="Vet visit",
@@ -678,9 +678,9 @@ class TestIntegrationWithPawPalSystem:
         self, mock_anthropic_client, basic_user
     ):
         """Medication tasks added by AI should be scheduled before regular tasks."""
-        from pawpal_system import TaskScheduler
+        from anicare_system import TaskScheduler
 
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         agent._tool_add_location_to_schedule(
             pet_name="Max",
             task_name="Give flea medication",
@@ -700,9 +700,9 @@ class TestIntegrationWithPawPalSystem:
         self, mock_anthropic_client, basic_user
     ):
         """An AI-added task should support mark_complete() from ScheduledTask."""
-        from pawpal_system import TaskScheduler
+        from anicare_system import TaskScheduler
 
-        agent = PawPalAgent(mock_anthropic_client, "fake-google-key", basic_user)
+        agent = AnicareAgent(mock_anthropic_client, "fake-google-key", basic_user)
         agent._tool_add_location_to_schedule(
             pet_name="Max",
             task_name="Park visit",

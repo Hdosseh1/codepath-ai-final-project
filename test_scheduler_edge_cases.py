@@ -1,6 +1,6 @@
 import pytest
 from datetime import datetime, time, timedelta
-from pawpal_system import User, Pet, Task, ScheduledTask, DailySchedule, TaskScheduler
+from anicare_system import User, Pet, Task, ScheduledTask, DailySchedule, TaskScheduler
 
 
 # ==================== SORTING CORRECTNESS TESTS ====================

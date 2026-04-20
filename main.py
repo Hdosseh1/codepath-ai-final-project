@@ -1,11 +1,11 @@
 from datetime import datetime, time
-from pawpal_system import User, Pet, Task, TaskScheduler, UserDataManager
+from anicare_system import User, Pet, Task, TaskScheduler, UserDataManager
 
 def main():
-    """Test the PawPal+ system with advanced features: filtering, conflicts, and recurring tasks."""
+    """Test the Anicare+ system with advanced features: filtering, conflicts, and recurring tasks."""
     
     print("=" * 60)
-    print("PawPal+ System Test (Advanced)")
+    print("Anicare+ System Test (Advanced)")
     print("=" * 60)
     
     # ==================== CREATE USER ====================

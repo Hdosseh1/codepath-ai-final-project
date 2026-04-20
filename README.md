@@ -1,4 +1,4 @@
-# PawPal+ AI
+# Anicare+ AI
 
 **An intelligent pet care scheduling assistant** powered by Claude Sonnet 4, featuring a RAG pipeline for real-time location discovery and an agentic workflow that autonomously manages pet schedules.
 
@@ -6,18 +6,18 @@
 
 ## Original project
 
-This project extends **PawPal+**, built in Modules 1–3 of AI 110. The original app allowed a pet owner to create profiles for their pets, add care tasks (walks, feedings, medications, grooming), and generate a prioritized daily schedule that respected the owner's availability window. It included conflict detection, recurring task support, and a JSON-based persistence layer — but it had no AI features; all scheduling was rule-based Python logic.
+This project extends **Anicare+**, built in Modules 1–3 of AI 110. The original app allowed a pet owner to create profiles for their pets, add care tasks (walks, feedings, medications, grooming), and generate a prioritized daily schedule that respected the owner's availability window. It included conflict detection, recurring task support, and a JSON-based persistence layer — but it had no AI features; all scheduling was rule-based Python logic.
 
 ---
 
 ## Title and summary
 
-**PawPal+ AI** adds two integrated AI capabilities to the original scheduler:
+**Anicare+ AI** adds two integrated AI capabilities to the original scheduler:
 
 1. A **RAG pipeline** that retrieves real nearby vets, parks, and pet supply stores from Google Places and uses Claude to generate grounded, context-aware recommendations — so the app never invents locations.
 2. An **agentic workflow** where Claude autonomously calls tools to search for places, read the pet's schedule, check business hours, and add new tasks — completing multi-step scheduling requests in a single natural-language prompt.
 
-Together these turn PawPal+ from a manual task tracker into a proactive AI scheduling assistant. A pet owner can type "find a good vet near me and add an appointment for Max on Saturday morning" and the system handles the rest.
+Together these turn Anicare+ from a manual task tracker into a proactive AI scheduling assistant. A pet owner can type "find a good vet near me and add an appointment for Max on Saturday morning" and the system handles the rest.
 
 ---
 
@@ -35,7 +35,7 @@ Both pipelines converge at Claude Sonnet 4 and deliver a response through the St
 
 ![Oversight and testing layers](assets/tests.png)
 
-Quality is enforced at three levels: automated pytest (33 mocked tests, no API keys required), human-in-the-loop review via the visible tool-call trace in the UI, and runtime guardrails including a 5-iteration cap, full logging to `pawpal_ai.log`, and per-tool error handling.
+Quality is enforced at three levels: automated pytest (33 mocked tests, no API keys required), human-in-the-loop review via the visible tool-call trace in the UI, and runtime guardrails including a 5-iteration cap, full logging to `anicare_ai.log`, and per-tool error handling.
 
 ---
 
@@ -46,8 +46,8 @@ Quality is enforced at three levels: automated pytest (33 mocked tests, no API k
 ### 1. Clone and enter the repo
 
 ```bash
-git clone https://github.com/Hdosseh1/ai110-module2show-pawpal-starter.git
-cd ai110-module2show-pawpal-starter
+git clone https://github.com/Hdosseh1/ai110-module2show-anicare-starter.git
+cd ai110-module2show-anicare-starter
 ```
 
 ### 2. Create and activate a virtual environment
@@ -132,7 +132,7 @@ The answer references only the two real locations returned by Google Places. No 
 ## Design decisions
 
 **Why separate `ai_features.py` from `app.py`?**
-Keeping all AI logic in its own module means the original scheduling code in `pawpal_system.py` is completely untouched. If the AI features break or need to be disabled, a single import line is all that changes. It also makes the AI code independently testable without spinning up Streamlit.
+Keeping all AI logic in its own module means the original scheduling code in `anicare_system.py` is completely untouched. If the AI features break or need to be disabled, a single import line is all that changes. It also makes the AI code independently testable without spinning up Streamlit.
 
 **Why Google Places for RAG retrieval instead of a vector database?**
 A vector database (Chroma, Pinecone) is the right tool when you need to search static documents — pet care articles, vet notes. For finding real nearby businesses that change daily (hours, ratings, new locations), a live API is strictly better. The retrieved data is always current and already structured, so there is no embedding step needed.
@@ -166,8 +166,8 @@ The test suite (`test_ai_features.py`) contains 33 tests across 8 classes, all u
 
 ## Reflection
 
-Building PawPal+ AI clarified something important about working with language models: the hardest part is not getting Claude to produce good text — it does that readily — but controlling *what information* Claude has access to when it generates that text. The RAG pipeline is fundamentally about information discipline: the system prompt tells Claude it may only use the retrieved context, and the context is deliberately narrow (5 nearby places, formatted plainly). The result is an assistant that is reliably accurate rather than occasionally brilliant.
+Building Anicare+ AI clarified something important about working with language models: the hardest part is not getting Claude to produce good text — it does that readily — but controlling *what information* Claude has access to when it generates that text. The RAG pipeline is fundamentally about information discipline: the system prompt tells Claude it may only use the retrieved context, and the context is deliberately narrow (5 nearby places, formatted plainly). The result is an assistant that is reliably accurate rather than occasionally brilliant.
 
 The agentic workflow surfaced a different lesson: agents are not magic. They are a loop with a tool dispatcher and a conversation history. Once that mental model clicks, the implementation becomes straightforward — and so does reasoning about failure modes. The MAX_ITERATIONS guardrail, the per-tool error handling, and the tool-call trace in the UI all follow naturally from thinking of the agent as a loop that can go wrong in specific, predictable ways.
 
-The biggest surprise was how cleanly the AI features integrated with the existing Python code. Because `PawPalAgent._tool_add_location_to_schedule` calls `pet.add_task()` directly on the live `User` object, the agent and the original scheduler share the same data with zero duplication. This made the integration tests almost trivial to write, which is usually a sign the architecture is right.
+The biggest surprise was how cleanly the AI features integrated with the existing Python code. Because `AnicareAgent._tool_add_location_to_schedule` calls `pet.add_task()` directly on the live `User` object, the agent and the original scheduler share the same data with zero duplication. This made the integration tests almost trivial to write, which is usually a sign the architecture is right.

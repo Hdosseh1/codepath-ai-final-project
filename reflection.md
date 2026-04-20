@@ -1,4 +1,4 @@
-# PawPal+ Project Reflection
+# Anicare+ Project Reflection
 
 ## 1. System Design
 
@@ -11,7 +11,7 @@ My initial UML has about 7 classes each handling different but linked tasks. The
 
 - Did your design change during implementation?
 - If yes, describe at least one change and why you made it.
-The code in pawpal_system.py was refactored to allow the user class have pets and tasks instead of passing them separately. The task scheduler also just extracts tasks from the user instead of looking up task ids from the pet.
+The code in anicare_system.py was refactored to allow the user class have pets and tasks instead of passing them separately. The task scheduler also just extracts tasks from the user instead of looking up task ids from the pet.
 ---
 
 ## 2. Scheduling Logic and Tradeoffs

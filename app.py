@@ -6,12 +6,12 @@ from typing import Optional
 from dotenv import load_dotenv
 load_dotenv()
 
-# Core PawPal system classes
-from pawpal_system import User, Pet, Task, TaskScheduler, UserDataManager
+# Core Anicare system classes
+from anicare_system import User, Pet, Task, TaskScheduler, UserDataManager
 from app_ai_tab import render_ai_tab
 
 st.set_page_config(
-    page_title="PawPal+",
+    page_title="Anicare+",
     page_icon="🐾",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -20,7 +20,7 @@ st.set_page_config(
 # -----------------------
 # Session init
 # -----------------------
-if "pawpal_user" not in st.session_state:
+if "anicare_user" not in st.session_state:
     # Try to load a previously-saved user; otherwise create a default.
     udm_init = UserDataManager()
     loaded = None
@@ -29,7 +29,7 @@ if "pawpal_user" not in st.session_state:
     except Exception:
         loaded = None
 
-    st.session_state["pawpal_user"] = loaded if loaded else User(username="Jordan", password="")
+    st.session_state["anicare_user"] = loaded if loaded else User(username="Jordan", password="")
 
 if "archived_tasks" not in st.session_state:
     st.session_state["archived_tasks"] = []
@@ -37,7 +37,7 @@ if "archived_tasks" not in st.session_state:
 if "last_schedule" not in st.session_state:
     st.session_state["last_schedule"] = None
 
-user: User = st.session_state["pawpal_user"]
+user: User = st.session_state["anicare_user"]
 
 # -----------------------
 # Helpers
@@ -66,7 +66,7 @@ def _persist_user_and_schedule(schedule=None) -> None:
 # -----------------------
 # Sidebar UI
 # -----------------------
-st.sidebar.title("🐾 PawPal+")
+st.sidebar.title("🐾 Anicare+")
 st.sidebar.caption("Manage pets, tasks, and build a schedule.")
 
 with st.sidebar.expander("👤 User", expanded=True):
@@ -179,7 +179,7 @@ with st.sidebar.expander("🗓️ Availability & Scheduling", expanded=True):
 # -----------------------
 # Main UI
 # -----------------------
-st.title("🐾 PawPal+")
+st.title("🐾 Anicare+")
 st.caption("A task planner + scheduler for pet care.")
 
 tab1, tab2, tab3 = st.tabs(["📋 Tasks", "📅 Schedule", "🤖 AI Assistant"])
