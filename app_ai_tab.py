@@ -131,6 +131,12 @@ def render_ai_tab(user) -> None:
                 if "REQUEST_DENIED" in stored["error"]:
                     st.warning("Enable **Places API** in Google Cloud Console and ensure billing is active.")
             else:
+                conf = stored.get("confidence", {})
+                level = conf.get("level", "Unknown")
+                reason = conf.get("reason", "")
+                color_map = {"High": "🟢", "Medium": "🟡", "Low": "🔴"}
+                icon = color_map.get(level, "⚪")
+                st.markdown(f"**Confidence:** {icon} **{level}** &nbsp;·&nbsp; *{reason}*")
                 st.markdown("#### Claude's recommendation")
                 st.info(stored["answer"])
 

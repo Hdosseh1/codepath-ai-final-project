@@ -51,7 +51,7 @@ logger = logging.getLogger("anicare_ai")
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
-MODEL = "claude-sonnet-4-6"
+MODEL = "claude-sonnet-4-20250514"
 
 PLACE_TYPE_MAP = {
     "vet": "veterinary_care",
@@ -313,6 +313,40 @@ class AnicareRAG:
     # Step 3: Generate
     # ------------------------------------------------------------------
 
+    def score_confidence(self, places: list[dict]) -> dict:
+        """
+        Rate the RAG answer confidence based on retrieved data quality.
+
+        Returns a dict with:
+          level  — "High" | "Medium" | "Low"
+          reason — one-line explanation shown to the user
+          color  — UI badge color hint
+        """
+        real = [p for p in places if "_api_error" not in p]
+        count = len(real)
+        rated = [p for p in real if isinstance(p.get("rating"), (int, float))]
+        avg_rating = (sum(p["rating"] for p in rated) / len(rated)) if rated else 0
+        any_open = any(p.get("open_now") is True for p in real)
+
+        if count >= 3 and avg_rating >= 4.0:
+            level, color = "High", "green"
+            reason = f"{count} locations found, avg rating {avg_rating:.1f}/5"
+        elif count >= 1 and avg_rating >= 3.0:
+            level, color = "Medium", "orange"
+            reason = f"{count} location(s) found, avg rating {avg_rating:.1f}/5 — verify before visiting"
+        elif count >= 1:
+            level, color = "Medium", "orange"
+            reason = f"{count} location(s) found but rating data unavailable"
+        else:
+            level, color = "Low", "red"
+            reason = "No locations retrieved — answer may be speculative"
+
+        if not any_open and count > 0:
+            reason += " · all currently closed"
+
+        self._log.info("Confidence scored: %s (%s)", level, reason)
+        return {"level": level, "reason": reason, "color": color}
+
     def query(
         self,
         user_question: str,
@@ -324,13 +358,17 @@ class AnicareRAG:
         """
         Run the full RAG pipeline and return a dict:
           {
-            "answer": str,       # Claude's response
-            "places": list[dict],# raw retrieved data
-            "context": str,      # formatted context passed to Claude
+            "answer":     str,        # Claude's response
+            "places":     list[dict], # raw retrieved data
+            "context":    str,        # formatted context passed to Claude
+            "confidence": dict,       # level, reason, color
           }
         """
         # --- Retrieve ---
         places = self.retrieve_nearby_places(category, lat, lng)
+
+        # --- Confidence score (before generate so Claude can see it) ---
+        confidence = self.score_confidence(places)
 
         # --- Augment ---
         context = self.build_context(places, category)
@@ -341,6 +379,8 @@ class AnicareRAG:
             "Answer using ONLY the location data provided in the context below. "
             "Never invent place names, addresses, or ratings. "
             "If none of the listed locations suit the owner's needs, say so clearly. "
+            f"Data confidence is {confidence['level']} — reflect this in your tone "
+            "(be direct when High, add caveats when Medium or Low). "
             "Be concise, friendly, and specific."
         )
 
@@ -349,7 +389,7 @@ class AnicareRAG:
             f"Owner's question: {user_question}"
         )
 
-        self._log.info("Generating RAG response for: %r", user_question)
+        self._log.info("Generating RAG response for: %r (confidence=%s)", user_question, confidence["level"])
 
         # --- Generate ---
         response = self.client.messages.create(
@@ -360,9 +400,9 @@ class AnicareRAG:
         )
 
         answer = response.content[0].text
-        self._log.info("RAG response generated successfully")
+        self._log.info("RAG response generated — confidence: %s", confidence["level"])
 
-        return {"answer": answer, "places": places, "context": context}
+        return {"answer": answer, "places": places, "context": context, "confidence": confidence}
 
 
 # ===========================================================================
